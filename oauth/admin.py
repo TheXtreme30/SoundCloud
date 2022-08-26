@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from . import models
+
+
+@admin.register(models.AuthUser)
+class AuthUserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'username', 'join_date')
+    list_display_links = ('email',)
