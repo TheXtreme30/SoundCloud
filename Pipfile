@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 djangorestframework = "*"
 pillow = "*"
+requests = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
