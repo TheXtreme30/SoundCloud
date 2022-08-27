@@ -14,7 +14,7 @@ class AuthUser(models.Model):
     username = models.CharField(max_length=255, blank=True, null=True)
     avatar = models.ImageField(
         upload_to=get_avatar_upload_path,
-        blanc=True, null=True,
+        blank=True, null=True,
         validators=[validate_image_file_extension, validate_image_size],
     )
 
