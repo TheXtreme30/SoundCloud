@@ -8,10 +8,10 @@ class AuthUser(models.Model):
     """Модель пользователя"""
     email = models.EmailField(max_length=255, unique=True)
     join_date = models.DateTimeField(auto_now_add=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    bio = models.TextField(max_length=1024, blank=True, null=True)
-    username = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(max_length=1024, blank=True)
+    username = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(
         upload_to=get_avatar_upload_path,
         blank=True, null=True,
