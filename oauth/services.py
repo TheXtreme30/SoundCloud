@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 
-
 SIZE_LIMIT = 4
 
 

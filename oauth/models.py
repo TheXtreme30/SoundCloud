@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.validators import validate_image_file_extension
+from django.db import models
 
 from oauth.services import get_avatar_upload_path, validate_image_size
 
@@ -18,17 +18,31 @@ class AuthUser(models.Model):
         validators=[validate_image_file_extension, validate_image_size],
     )
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.email
+
     @property
     def is_authenticated(self):
         return True
 
-    def __str__(self):
-        return self.email
-        
-        
+
 class Follower(models.Model):
+    """Модель подписок"""
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='owner')
     subscriber = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='subscriber')
-    
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'subscriber'], name='follow_unique'
+            )
+        ]
+
     def __str__(self):
         return f'{self.subscriber} подписан на {self.user}'
