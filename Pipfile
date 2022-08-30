@@ -7,7 +7,9 @@ name = "pypi"
 djangorestframework = "*"
 pillow = "*"
 requests = "*"
-drf-yasg = "*"
+pyjwt = "*"
+google-auth = "*"
+drf-spectacular = "*"
 
 [dev-packages]
 flake8 = "*"
