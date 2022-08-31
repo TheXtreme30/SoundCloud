@@ -3,7 +3,7 @@
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import oauth.services
+import oauth.services.services
 
 
 class Migration(migrations.Migration):
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(blank=True, max_length=255, null=True)),
                 ('bio', models.TextField(blank=True, max_length=1024, null=True)),
                 ('username', models.CharField(blank=True, max_length=255, null=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to=oauth.services.get_avatar_upload_path, validators=[django.core.validators.validate_image_file_extension, oauth.services.validate_image_size])),
+                ('avatar', models.ImageField(blank=True, null=True, upload_to=oauth.services.services.get_avatar_upload_path, validators=[django.core.validators.validate_image_file_extension, oauth.services.services.validate_image_size])),
             ],
             options={
                 'verbose_name': 'Пользователь',

@@ -1,7 +1,7 @@
 from django.core.validators import validate_image_file_extension
 from django.db import models
 
-from oauth.services import get_avatar_upload_path, validate_image_size
+from oauth.services.services import get_avatar_upload_path, validate_image_size
 
 
 class AuthUser(models.Model):
