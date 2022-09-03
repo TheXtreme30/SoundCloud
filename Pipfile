@@ -10,6 +10,7 @@ requests = "*"
 pyjwt = "*"
 google-auth = "*"
 drf-spectacular = "*"
+django-filter = "*"
 
 [dev-packages]
 flake8 = "*"

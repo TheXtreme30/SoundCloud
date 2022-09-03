@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, parsers,permissions
 
 from . import serializers
-from services.auth_services import check_google_auth
+from .services.auth_services import check_google_auth
 
 
 class UserView(viewsets.ModelViewSet):
