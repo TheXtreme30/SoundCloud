@@ -9,6 +9,9 @@ router.register('me', views.UserView, basename='me')
 
 urlpatterns = [
     path('', include(router.urls)),
+]
+
+urlpatterns += [
     path('google/', views.google_auth),
     path('', views.google_login),
 ]
