@@ -30,8 +30,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ('user',)
 
 
-@admin.register(models.PlayList)
-class PlayListAdmin(admin.ModelAdmin):
+@admin.register(models.Playlist)
+class PlaylistAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'name')
     list_display_links = ('user',)
     search_fields = ('user__email', 'user__username', 'title__name')

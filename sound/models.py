@@ -87,7 +87,7 @@ class Comment(models.Model):
         return f'Пользователь {self.user} оставил коментарий к {self.title}.'
 
 
-class PlayList(models.Model):
+class Playlist(models.Model):
     """ Модель плейлистов пользователя."""
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='play_lists')
     name = models.CharField(max_length=256)
