@@ -5,7 +5,7 @@ from oauth.services.services import get_avatar_upload_path, validate_image_size
 
 
 class AuthUser(models.Model):
-    """Модель пользователя"""
+    """Модель пользователя."""
     email = models.EmailField(max_length=255, unique=True)
     join_date = models.DateTimeField(auto_now_add=True)
     country = models.CharField(max_length=255, blank=True)
@@ -31,7 +31,7 @@ class AuthUser(models.Model):
 
 
 class Follower(models.Model):
-    """Модель подписок"""
+    """Модель подписок."""
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='owner')
     subscriber = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='subscriber')
 

@@ -21,17 +21,17 @@ class AuthBackend(authentication.BaseAuthentication):
             return None
 
         if len(auth_header) == 1:
-            raise exceptions.AuthenticationFailed('Invalid token header. No credential provided.')
+            raise exceptions.AuthenticationFailed('Недопустимый заголовок токена. Учетные данные не предоставлены.')
         elif len(auth_header) > 2:
             raise exceptions.AuthenticationFailed(
-                'Invalid token header. Token string should not contain spaces'
+                'Недопустимый заголовок токена. Строка токена не должна содержать пробелов.'
             )
 
         try:
             token = auth_header[1].decode('utf-8')
         except UnicodeError:
             raise exceptions.AuthenticationFailed(
-                'Invalid token header. Token string should not contain invalid characters.'
+                'Недопустимый заголовок токена. Строка токена не должна содержать недопустимых символов.'
             )
 
         return self.authenticate_credential(token)
@@ -40,23 +40,22 @@ class AuthBackend(authentication.BaseAuthentication):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
         except jwt.PyJWTError:
-            raise exceptions.AuthenticationFailed('Invalid authentication. Could not decode token.')
+            raise exceptions.AuthenticationFailed('Неверная аутентификация. Не удалось расшифровать токен.')
 
         token_exp = datetime.fromtimestamp(payload['exp'])
         if token_exp < datetime.utcnow():
-            raise exceptions.AuthenticationFailed('Token expired.')
+            raise exceptions.AuthenticationFailed('Срок действия токена истек.')
 
         try:
             user = AuthUser.objects.get(id=payload['user_id'])
         except AuthUser.DoesNotExist:
-            raise exceptions.AuthenticationFailed('No user matching this token was found.')
+            raise exceptions.AuthenticationFailed('Пользователь, соответствующий этому токену, найден не был.')
 
         return user, None
 
 
 def create_token(user_id: int) -> dict:
-    """ Создание токена
-    """
+    """ Создание токена."""
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         'user_id': user_id,
@@ -68,8 +67,7 @@ def create_token(user_id: int) -> dict:
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
-    """ Создание access token
-    """
+    """ Создание access token."""
     to_encode = data.copy()
     if expires_delta is not None:
         expire = datetime.utcnow() + expires_delta
@@ -81,12 +79,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 
 def check_google_auth(google_user: GoogleAuth) -> dict:
+    """Проверка токена."""
     try:
         id_token.verify_oauth2_token(
             google_user['token'], requests.Request(), settings.GOOGLE_CLIENT_ID
         )
     except ValueError:
-        raise exceptions.AuthenticationFailed(code=403, detail='Bad token Google')
+        raise exceptions.AuthenticationFailed(code=403, detail='Неправильный токен Google')
 
     user, _ = AuthUser.objects.get_or_create(email=google_user['email'])
     return create_token(user.id)

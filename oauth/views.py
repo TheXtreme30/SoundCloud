@@ -4,13 +4,12 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework import viewsets, parsers,permissions
 
-from . import serializers
+from . import serializers, models
 from .services.auth_services import check_google_auth
 
 
 class UserView(viewsets.ModelViewSet):
-    """ Просмотр и редактирование данных пользователя
-    """
+    """Просмотр и редактирование данных пользователя."""
     parser_classes = (parsers.MultiPartParser,)
     serializers_class = serializers.UserSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -22,16 +21,21 @@ class UserView(viewsets.ModelViewSet):
         return self.get_queryset()
 
 
+class AuthorView(viewsets.ReadOnlyModelViewSet):
+    """Список авторов."""
+    queryset = models.AuthUser.objects.all()
+    serializer_class = serializers.AuthorSerializer
+
+
+
 def google_login(request):
-    """ Страница входа через Google
-    """
+    """Страница входа через Google."""
     return render(request, 'oauth/google_login.html')
 
 
 @api_view(["POST"])
 def google_auth(request):
-    """ Подтверждение авторизации через Google
-    """
+    """Подтверждение авторизации через Google."""
     google_data = serializers.GoogleAuth(data=request.data)
     if google_data.is_valid():
         token = check_google_auth(google_data.data)
