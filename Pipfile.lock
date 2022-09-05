@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b152cc4fbab37e6a786fdcb23085deb73a72be382a8eba0e4f97b6a38fd858da"
+            "sha256": "16bb9937748631529847cf9441e55d9ffcac74724aeb6048f835327f57eba1b6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,11 +58,19 @@
         },
         "django": {
             "hashes": [
-                "sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a",
-                "sha256:032f8a6fc7cf05ccd1214e4a2e21dfcd6a23b9d575c6573cacc8c67828dbe642"
+                "sha256:a153ffd5143bf26a877bfae2f4ec736ebd8924a46600ca089ad96b54a1d4e28e",
+                "sha256:acb21fac9275f9972d81c7caf5761a89ec3ea25fe74545dd26b8a48cb3a0203e"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.1"
+            "version": "==4.1.1"
+        },
+        "django-audio-validator": {
+            "hashes": [
+                "sha256:20aabb444e4290d38a54fee24908f0e9fd9c3dc680a76a2f5096d26d3390b4be",
+                "sha256:7794e2cc4f0ec6c3ebcb04442dd66a5a7a646f598a020475fe741d36feb08088"
+            ],
+            "index": "pypi",
+            "version": "==0.0.3"
         },
         "django-filter": {
             "hashes": [
@@ -87,6 +95,13 @@
             ],
             "index": "pypi",
             "version": "==0.23.1"
+        },
+        "filetype": {
+            "hashes": [
+                "sha256:117e25a50988d1a03a32ed510f4a15353e7291e683e94c63930497dd2c66ce24",
+                "sha256:afe4a00029601f66d239b72688065cc7c219dec1c927994f90b825e9e53d8f93"
+            ],
+            "version": "==1.1.0"
         },
         "google-auth": {
             "hashes": [

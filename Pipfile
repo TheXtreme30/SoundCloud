@@ -11,6 +11,7 @@ pyjwt = "*"
 google-auth = "*"
 drf-spectacular = "*"
 django-filter = "*"
+django-audio-validator = "*"
 
 [dev-packages]
 flake8 = "*"

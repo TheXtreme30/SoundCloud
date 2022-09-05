@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'oauth',
+    'sound',
 ]
 
 REST_FRAMEWORK = {
