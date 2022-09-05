@@ -6,12 +6,12 @@ from oauth.services.services import get_avatar_upload_path, validate_image_size
 
 class AuthUser(models.Model):
     """Модель пользователя."""
-    email = models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(max_length=256, unique=True)
     join_date = models.DateTimeField(auto_now_add=True)
-    country = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
+    country = models.CharField(max_length=256, blank=True)
+    city = models.CharField(max_length=256, blank=True)
     bio = models.TextField(max_length=1024, blank=True)
-    username = models.CharField(max_length=255, blank=True)
+    username = models.CharField(max_length=256, blank=True)
     avatar = models.ImageField(
         upload_to=get_avatar_upload_path,
         blank=True, null=True,

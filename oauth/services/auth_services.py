@@ -3,9 +3,9 @@ from typing import Optional
 
 import jwt
 from django.conf import settings
-from rest_framework import authentication, exceptions
-from google.oauth2 import id_token
 from google.auth.transport import requests
+from google.oauth2 import id_token
+from rest_framework import authentication, exceptions
 
 from ..models import AuthUser
 from ..serializers import GoogleAuth
