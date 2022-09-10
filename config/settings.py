@@ -18,27 +18,53 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'rest_framework',
-    'drf_spectacular',
-
-    'oauth',
-    'sound',
+DJANGO_APPS = [
+"django.contrib.admin",
+"django.contrib.auth",
+"django.contrib.contenttypes",
+"django.contrib.sessions",
+"django.contrib.messages",
+"django.contrib.staticfiles",
 ]
 
+PROJECT_APPS = [
+    'oauth.apps.OauthConfig',
+    'sound.apps.SoundConfig',
+]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'djoser',
+    'social_django',
+    'django_filters',
+    'drf_spectacular',
+]
+
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
+
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('oauth.services.auth_services.AuthBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+DJOSER = {
+    'USER_ID_FIELD': 'username',
+    'PASSWORD_RESET_CONFIRM_URL': 'users/reset_password/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'users/reset_email/{uid}/{token}',
+    'ACTIVATION_URL': 'users/activation/{uid}/{token}',
+    'LOGOUT_ON_PASSWORD_CHANGE': True,
+    'TOKEN_MODEL': None,
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SoundCloud API',
@@ -46,6 +72,7 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +97,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -111,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -129,15 +158,23 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+FILE_UPLOAD_HANDLERS= ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CONSTANTS
+AUTH_USER_MODEL = ' oauth.CustomUser'
 
-ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
-GOOGLE_CLIENT_ID = '461803388497-hhfa2ptjkbofof6akb6t4od0orfonigc.apps.googleusercontent.com'
-GOOGLE_SECRET_KEY = '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'
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True # Postgres settings
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['email', 'username']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '461803388497-hhfa2ptjkbofof6akb6t4od0orfonigc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOCSPX'
