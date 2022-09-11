@@ -165,7 +165,7 @@ FILE_UPLOAD_HANDLERS= ["django.core.files.uploadhandler.TemporaryFileUploadHandl
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = ' oauth.CustomUser'
+AUTH_USER_MODEL = 'oauth.CustomUser'
 
 
 AUTHENTICATION_BACKENDS = (
@@ -177,4 +177,4 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['email', 'username']
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '461803388497-hhfa2ptjkbofof6akb6t4od0orfonigc.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOCSPX'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
