@@ -4,17 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-djangorestframework = "*"
 pillow = "*"
-requests = "*"
-pyjwt = "*"
-google-auth = "*"
-drf-spectacular = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+social-auth-app-django = "*"
 django-filter = "*"
 django-audio-validator = "*"
+drf-spectacular = "*"
+djangorestframework = "*"
+django = "*"
 
 [dev-packages]
-flake8 = "*"
 isort = "*"
 
 [requires]
