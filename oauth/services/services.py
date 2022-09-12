@@ -1,29 +1,15 @@
 import os
-from django.core.exceptions import ValidationError
-from django.utils.deconstruct import deconstructible
 
+from django.core.exceptions import ValidationError
 
 SIZE_LIMIT = 4
 
 
-@deconstructible
-class PathAndRename(object):
-
-    def __init__(self, path, name):
-        self.path = path
-        self.name = name
-
-    def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
-        filename = f'{self.name}.{ext}'
-        return os.path.join(self.sub_path, filename)
-
-
 def get_avatar_upload_path(instance, filename):
     """Построение пути к файлу: media/avatar/username/{file}."""
-    path = f'avatar/{instance.username}/'
-    name = f'{instance.username}'
-    return PathAndRename(path, name)
+    path = f'avatat/{instance.username}/'
+    new_filename = f'{instance.username}.{filename.split(".")[-1]}'
+    return os.path.join(path, new_filename)
 
 
 def validate_image_size(fiel_obj):
