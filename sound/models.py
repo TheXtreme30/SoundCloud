@@ -7,6 +7,7 @@ from oauth.models import CustomUser
 from sound.services.services import (get_album_cover_upload_path,
                                      get_playlist_cover_upload_path,
                                      get_title_upload_path,
+                                     get_title_cover_upload_path,
                                      validate_size_image)
 
 User = get_user_model()
@@ -57,7 +58,7 @@ class Title(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     private = models.BooleanField(default=False)
     cover = models.ImageField(
-        upload_to=get_playlist_cover_upload_path,
+        upload_to=get_title_cover_upload_path,
         blank=True, null=True,
         validators=[validate_image_file_extension, validate_size_image],
     )

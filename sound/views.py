@@ -1,6 +1,7 @@
 import os
+from urllib import response
 
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import parsers, status, viewsets
@@ -112,35 +113,37 @@ class TitleView(viewsets.ModelViewSet):
         delete_old_file(instance.file.path)
         instance.delete()
 
-    @action(detail=False, permission_classes=[IsAuthenticated])
-    def streaming_title(self, request, user_id, title_id):
+    @action(detail=True)
+    def streaming_title(self, request, user_id, pk=None):
         user = request.user
         author_id = user_id
         if user.id == author_id:
-            self.title = get_object_or_404(models.Title, id=title_id)
-        self.title = get_object_or_404(models.Title, id=title_id, private=False)
+            self.title = get_object_or_404(models.Title, id=pk)
+        self.title = get_object_or_404(models.Title, id=pk, private=False)
 
         if os.path.exists(self.title.file.path):
-            self.set_play()
-            response = HttpResponse('', content_type="audio/mpeg", status=206)
-            response['X-Accel-Redirect'] = f"/mp3/{self.title.file.name}"
+            response = FileResponse(open(self.title.file.path, 'rb'), filename=self.title.file.name)
+            # response = HttpResponse('', content_type="audio/mpeg", status=206)
+            # response['X-Accel-Redirect'] = self.title.file.path
             return response
         else:
             return Http404
 
-    @action(detail=False, permission_classes=[IsAuthenticated])
-    def download_title(self, request, user_id, title_id):
+    @action(detail=True)
+    def download_title(self, request, user_id, pk=None):
         user = request.user
         author_id = user_id
         if user.id == author_id:
-            self.title = get_object_or_404(models.Title, id=title_id)
-        self.title = get_object_or_404(models.Title, id=title_id, private=False)
+            self.title = get_object_or_404(models.Title, id=pk)
+        self.title = get_object_or_404(models.Title, id=pk, private=False)
 
         if os.path.exists(self.title.file.path):
-            self.set_download()
-            response = HttpResponse('', content_type="audio/mpeg", status=206)
-            response["Content-Disposition"] = f"attachment; filename={self.title.file.name}"
-            response['X-Accel-Redirect'] = f"/media/{self.title.file.name}"
+            response = FileResponse(
+                open(self.title.file.path, 'rb'), filename=self.title.file.name, as_attachment=True
+            )
+            # response = HttpResponse('', content_type="audio/mpeg", status=206)
+            # response["Content-Disposition"] = f"attachment; filename={self.title.file.name.split('/')[-1]}"
+            # response['X-Accel-Redirect'] = self.title.file.path
             return response
         else:
             return Http404

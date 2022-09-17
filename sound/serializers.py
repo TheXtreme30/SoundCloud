@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from oauth.models import CustomUser
-
 from . import models
 from .services.services import delete_old_file
 
@@ -10,14 +8,14 @@ class UserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
-        model = CustomUser
+        model = models.User
         fields = ('id', 'email', 'username', 'country', 'city', 'bio', 'avatar', 'is_subscribed')
 
-        def get_is_subscribed(self, obj):
-            request = self.context.get('request')
-            if request is None or request.user.is_anonymous:
-                return False
-            return models.Follow.objects.filter(user=request.user, subscriber=obj.id).exists()
+    def get_is_subscribed(self, obj):
+        request = self.context.get('request')
+        if request is None or request.user.is_anonymous:
+            return False
+        return models.Follow.objects.filter(user=request.user, subscriber=obj.id).exists()
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -40,7 +38,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 class TitleSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    genres = GenreSerializer(many=True)
+    genres = GenreSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Title
