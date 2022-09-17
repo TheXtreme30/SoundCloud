@@ -13,6 +13,7 @@ django-audio-validator = "*"
 drf-spectacular = "*"
 djangorestframework = "*"
 django = "*"
+gunicorn = "*"
 
 [dev-packages]
 isort = "*"

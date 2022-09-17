@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -8,12 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_5-w=#u%=6ak_z-^ra1e2((_#-i3e7%=4ci+@2u=^sn!43c%-v'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-_5-w=#u%=6ak_z-^ra1e2((_#-i3e7%=4ci+@2u=^sn!43c%-v')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', False)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 
 
 # Application definition
@@ -27,11 +28,6 @@ DJANGO_APPS = [
 "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = [
-    'oauth.apps.OauthConfig',
-    'sound.apps.SoundConfig',
-]
-
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
@@ -39,6 +35,11 @@ THIRD_PARTY_APPS = [
     'social_django',
     'django_filters',
     'drf_spectacular',
+]
+
+PROJECT_APPS = [
+    'oauth.apps.OauthConfig',
+    'sound.apps.SoundConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -113,8 +114,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": os.environ.get("POSTGRES_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("POSTGRES_USER", "user"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
@@ -177,5 +182,5 @@ AUTHENTICATION_BACKENDS = (
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True # Postgres settings
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['email', 'username']
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '461803388497-hhfa2ptjkbofof6akb6t4od0orfonigc.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')

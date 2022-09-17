@@ -97,6 +97,8 @@ class TitleView(viewsets.ModelViewSet):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (IsAuthorOrAdminOrReadOnly,)
     serializer_class = serializers.TitleSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields =('name', 'user__username', 'album__name', 'genre__name')
 
     def get_queryset(self):
         user  = self.request.user
@@ -113,7 +115,7 @@ class TitleView(viewsets.ModelViewSet):
         delete_old_file(instance.file.path)
         instance.delete()
 
-    @action(detail=True)
+    @action(detail=True, permission_classes=[IsAuthenticated])
     def streaming_title(self, request, user_id, pk=None):
         user = request.user
         author_id = user_id
@@ -129,7 +131,7 @@ class TitleView(viewsets.ModelViewSet):
         else:
             return Http404
 
-    @action(detail=True)
+    @action(detail=True, permission_classes=[IsAuthenticated])
     def download_title(self, request, user_id, pk=None):
         user = request.user
         author_id = user_id
