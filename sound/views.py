@@ -124,9 +124,8 @@ class TitleView(viewsets.ModelViewSet):
         self.title = get_object_or_404(models.Title, id=pk, private=False)
 
         if os.path.exists(self.title.file.path):
-            response = FileResponse(open(self.title.file.path, 'rb'), filename=self.title.file.name)
-            # response = HttpResponse('', content_type="audio/mpeg", status=206)
-            # response['X-Accel-Redirect'] = self.title.file.path
+            response = HttpResponse('', content_type="audio/mpeg", status=206)
+            response['X-Accel-Redirect'] = self.title.file.path
             return response
         else:
             return Http404
@@ -140,12 +139,9 @@ class TitleView(viewsets.ModelViewSet):
         self.title = get_object_or_404(models.Title, id=pk, private=False)
 
         if os.path.exists(self.title.file.path):
-            response = FileResponse(
-                open(self.title.file.path, 'rb'), filename=self.title.file.name, as_attachment=True
-            )
-            # response = HttpResponse('', content_type="audio/mpeg", status=206)
-            # response["Content-Disposition"] = f"attachment; filename={self.title.file.name.split('/')[-1]}"
-            # response['X-Accel-Redirect'] = self.title.file.path
+            response = HttpResponse('', content_type="audio/mpeg", status=206)
+            response["Content-Disposition"] = f"attachment; filename={self.title.file.name.split('/')[-1]}"
+            response['X-Accel-Redirect'] = self.title.file.path
             return response
         else:
             return Http404
